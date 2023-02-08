@@ -27,6 +27,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Cringemas
+        run: clang --version
+
       - name: Install Xcode tools # Required for 'Apple clang'
         run: xcode-select --install
       
@@ -51,13 +54,15 @@ jobs:
         run: brew bundle
 
       - name: Build for macOS arm64
-        run: ./build.sh arm64 && mv ./ffmpeg/dist_arm64 ./dist_arm64
+        run: ./build.sh arm64 && tar -zcvf ./arm64.tar.gz ./ffmpeg/dist_arm64
 
       - name: Build for macOS x64_64
-        run: ./build.sh x64_64 && mv ./ffmpeg/dist_x64_64 ./dist_x64_64
+        run: ./build.sh x64_64 && tar -zcvf ./x64_64.tar.gz ./ffmpeg/dist_x64_64
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: Release.txt
+          files: |
+            arm64.tar.gz
+            x64_64.tar.gz
