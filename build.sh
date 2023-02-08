@@ -13,19 +13,19 @@ if [ $TARGET_ARCH != "x64_64" ] && [ $TARGET_ARCH != "arm64" ]; then
 fi
 
 if test -f "ffmpeg.tar.xz"; then
-    echo "ffmpeg.tar.xz already found. Reusing it!"
+    echo "'./ffmpeg.tar.xz' already found. Reusing it!"
 else
     echo "Downloading ffmpeg sources..."
     curl -o ffmpeg.tar.xz https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.xz
 fi
 
-if [ -d "ffmpeg" ]; then
-    echo "ffmpeg already found. Cleaning and reusing it!"
+if [ -d "./ffmpeg" ]; then
+    echo "'./ffmpeg' already found. Cleaning and reusing it!"
     cd ffmpeg/
     make distclean
 else
     echo "Extracing ffmpeg sources..."
-    mkdir ffmpeg
+    mkdir ffmpeg/
     tar -xf ffmpeg.tar.xz --strip-components=1 -C ffmpeg
     cd ffmpeg/
 fi
