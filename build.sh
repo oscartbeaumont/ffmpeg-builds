@@ -36,7 +36,7 @@ ARGS="--prefix=./dist_$TARGET_ARCH --enable-static --disable-shared --enable-pth
 if [ $TARGET_ARCH == "x64_64" ]; then
     ARGS="$ARGS --enable-neon"
 elif [ $TARGET_ARCH == "arm64" ]; then
-    ARGS="$ARGS --enable-cross-compile --arch=arm64 --cc='clang -arch arm64'"
+    ARGS="$ARGS --enable-cross-compile --arch=arm64"
 else
     echo "unreachable!()"
     exit 1;
