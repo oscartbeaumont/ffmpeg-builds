@@ -20,18 +20,15 @@ else
 fi
 
 if [ -d "ffmpeg" ]; then
-    echo "./ffmpeg directory exists. Please remove it and rerun!"
-    exit 1
-else
-     echo "ffmpeg.tar.xz already found. Cleaning and reusing it!"
+    echo "ffmpeg already found. Cleaning and reusing it!"
+    cd ffmpeg/
     make distclean
+else
+    echo "Extracing ffmpeg sources..."
+    mkdir ffmpeg
+    tar -xf ffmpeg.tar.xz --strip-components=1 -C ffmpeg
+    cd ffmpeg/
 fi
-
-echo "Extracing ffmpeg sources..."
-mkdir ffmpeg
-tar -xf ffmpeg.tar.xz --strip-components=1 -C ffmpeg
-
-cd ffmpeg/
 
 # Configure
 echo "Configuring FFmpeg to build for $TARGET_ARCH"
