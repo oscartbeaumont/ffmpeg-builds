@@ -24,5 +24,6 @@ jobs:
   setup:
     runs-on: macos-latest
     steps:
+      - uses: actions/checkout@v3
       - run: brew install ffmpeg # For deps for now
       - run: ./build.sh
