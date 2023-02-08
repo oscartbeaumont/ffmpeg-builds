@@ -24,9 +24,9 @@ jobs:
   setup:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: brew install ffmpeg # For deps for now
-
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
       - name: Cache Brew deps
         uses: actions/cache@v3.0.9
         with:
