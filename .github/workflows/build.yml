@@ -42,7 +42,7 @@ jobs:
             /usr/local/bin
             /usr/local/opt
             /usr/local/lib/python3.8
-          key: brew-deps-${{ hashFiles('./Brewfile) }}-v2
+          key: brew-deps-${{ hashFiles('./Brewfile') }}-v2
       
       - name: Instal Brew deps
         run: brew bundle
