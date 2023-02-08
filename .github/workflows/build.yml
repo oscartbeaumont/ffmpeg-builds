@@ -22,16 +22,10 @@ on:
 
 jobs:
   setup:
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Cringemas
-        run: clang --version
-
-      - name: Install Xcode tools # Required for 'Apple clang'
-        run: xcode-select --install
       
       - name: Cache Brew deps
         uses: actions/cache@v3.0.9
