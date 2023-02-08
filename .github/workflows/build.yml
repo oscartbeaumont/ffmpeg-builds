@@ -26,4 +26,29 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: brew install ffmpeg # For deps for now
-      - run: ./build.sh
+
+      - name: Cache Brew deps
+        uses: actions/cache@v3.0.9
+        with:
+          # Paths to cache:
+          # /usr/local/Homebrew - installation folder of Homebrew
+          # /usr/local/Cellar - installation folder of Homebrew formulae
+          # /usr/local/Frameworks, /usr/local/bin, /usr/local/opt - contain (links to) binaries installed by Homebrew formulae
+          # /usr/local/lib/python3.8 - Python3 packages installation
+          path: |
+            /usr/local/Homebrew
+            /usr/local/Cellar
+            /usr/local/Frameworks
+            /usr/local/bin
+            /usr/local/opt
+            /usr/local/lib/python3.8
+          key: brew-deps-${{ hashFiles('./Brewfile) }}-v2
+      
+      - name: Instal Brew deps
+        run: brew bundle
+
+      - name: Build for macOS arm64
+        run: ./build.sh arm64 && mv ./ffmpeg/dist_arm64 ./dist_arm64
+
+      - name: Build for macOS x64_64
+        run: ./build.sh x64_64 && mv ./ffmpeg/dist_x64_64 ./dist_x64_64

@@ -2,10 +2,14 @@
 
 set -e
 
-rm -rf ./ffmpeg # TODO: Remove
-if [ -d "ffmpeg" ]; then
-    echo "./ffmpeg directory exists. Please remove it and rerun!"
+TARGET_ARCH=$1
+if [ -z "$TARGET_ARCH" ]; then
+    echo "No target architecture specified! Run the command as './build.sh <target_arch>'"
     exit 1
+fi
+
+if [ $TARGET_ARCH != "x64_64" ] && [ $TARGET_ARCH != "arm64" ]; then
+  echo "Invalid system architecture for build. Supported architectures are 'x64_64' and 'arm64'"
 fi
 
 if test -f "ffmpeg.tar.xz"; then
@@ -15,66 +19,42 @@ else
     curl -o ffmpeg.tar.xz https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.xz
 fi
 
+if [ -d "ffmpeg" ]; then
+    echo "./ffmpeg directory exists. Please remove it and rerun!"
+    exit 1
+else
+     echo "ffmpeg.tar.xz already found. Cleaning and reusing it!"
+    make distclean
+fi
+
 echo "Extracing ffmpeg sources..."
 mkdir ffmpeg
 tar -xf ffmpeg.tar.xz --strip-components=1 -C ffmpeg
 
 cd ffmpeg/
 
+# Configure
+echo "Configuring FFmpeg to build for $TARGET_ARCH"
+ARGS = "--prefix=./dist_$TARGET_ARCH --enable-static --disable-shared --enable-pthreads --enable-version3 --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox"
+if [ $TARGET_ARCH != "x64_64" ]; then
+    ARGS = "$ARGS --enable-cross-compile --arch=arm64 --cc='clang -arch arm64' --enable-neon"
+elif [ $TARGET_ARCH != "arm64" ]; then
+    ARGS = "$ARGS --enable-cross-compile --arch=arm64 --cc='clang -arch arm64'"
+else
+    echo "unreachable!()"
+    exit 1;
+fi
 
-# M1 Build
-./configure --enable-cross-compile --prefix=./install_x86_64 --arch=arm64 --cc='clang -arch arm64'
+./configure $ARGS
+
+# Build
+echo "Building FFmpeg for $TARGET_ARCH"
 make build
 
-# MAC_OS_ARGS="--enable-videotoolbox"
-# MACOS_ARM_ARGS="--enable-neon"
-# ./configure \
-#     --enable-shared \
-#     --enable-pthreads \
-#     --enable-version3 \
-#     --enable-ffplay \
-#     --enable-gnutls \
-#     --enable-gpl \
-#     --enable-libaom \
-#     --enable-libaribb24 \
-#     --enable-libbluray \
-#     --enable-libdav1d \
-#     --enable-libmp3lame \
-#     --enable-libopus \
-#     --enable-librav1e \
-#     --enable-librist \
-#     --enable-librubberband \
-#     --enable-libsnappy \
-#     --enable-libsrt \
-#     --enable-libsvtav1 \
-#     --enable-libtesseract \
-#     --enable-libtheora \
-#     --enable-libvidstab \
-#     --enable-libvmaf \
-#     --enable-libvorbis \
-#     --enable-libvpx \
-#     --enable-libwebp \
-#     --enable-libx264 \
-#     --enable-libx265 \
-#     --enable-libxml2 \
-#     --enable-libxvid \
-#     --enable-lzma \
-#     --enable-libfontconfig \
-#     --enable-libfreetype \
-#     --enable-frei0r \
-#     --enable-libass \
-#     --enable-libopencore-amrnb \
-#     --enable-libopencore-amrwb \
-#     --enable-libopenjpeg \
-#     --enable-libspeex \
-#     --enable-libsoxr \
-#     --enable-libzmq \
-#     --enable-libzimg \
-#     --disable-libjack \
-#     --disable-indev=jack "$MAC_OS_ARGS" "$MACOS_ARM_ARGS"
+# Install (to --prefix dir)
+make install
 
-# mkdir dist
-# TODO: Move them into the dist dir
-# TODO: GH Releases
-
+# Cleanup
+echo "Cleanup"
+cd ../
 rm ffmpeg.tar.xz
