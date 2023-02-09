@@ -34,6 +34,7 @@ brew "xvid"
 brew "xz"
 brew "zeromq"
 brew "zimg"
+brew "yasm"
 
 # uses_from_macos "bzip2"
 # uses_from_macos "libxml2"
