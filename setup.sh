@@ -17,7 +17,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     cargo build --release
 
     echo "Cinstall"
-    cargo cinstall --release
+    sudo cargo cinstall --release
 
     cd ../
 elif [[ $OSTYPE == 'darwin'* ]]; then
@@ -34,6 +34,7 @@ elif [[ $OSTYPE == 'darwin'* ]]; then
 
     echo "Build"
     make
+    make install
 
     cd ../
 fi
