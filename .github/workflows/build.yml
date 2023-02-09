@@ -78,3 +78,20 @@ jobs:
           files: |
             arm64.tar.gz
             x64_64.tar.gz
+  
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: ./build.sh x64_64 && tar -zcvf ./x64_64.tar.gz ./ffmpeg/dist_x64_64
+
+      # - name: Release
+      #   uses: softprops/action-gh-release@v1
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: |
+      #       arm64.tar.gz
+      #       x64_64.tar.gz
