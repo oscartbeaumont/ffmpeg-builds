@@ -67,7 +67,7 @@ jobs:
 
       # Taken from: https://trac.ffmpeg.org/wiki/CompilationGuide/macOS
       - name: Install Brew deps
-        run: brew install automake fdk-aac git lame libass libtool libvorbis libvpx opus sdl shtool texi2html theora wget x264 x265 xvid nasm srt
+        run: brew install automake fdk-aac git lame libass libtool libvorbis libvpx opus sdl shtool texi2html theora wget x264 x265 xvid nasm srt frei0r
 
       # - name: Build for macOS arm64
       #   run: ./build.sh arm64 && tar -zcvf ./arm64.tar.gz ./ffmpeg/dist_arm64 # TODO: Build all the dependencies for M1 and this should be good
