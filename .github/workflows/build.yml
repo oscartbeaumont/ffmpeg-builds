@@ -21,7 +21,25 @@ on:
     - cron: '0 12 * * *'
 
 jobs:
-  setup:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Build
+        run: ./build.sh x64_64
+        # && tar -zcvf ./x64_64.tar.gz ./ffmpeg/dist_x64_64
+
+      # - name: Release
+      #   uses: softprops/action-gh-release@v1
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: |
+      #       arm64.tar.gz
+      #       x64_64.tar.gz
+
+  macOS:
     runs-on: macos-12
     steps:
       - name: Checkout repository
@@ -47,8 +65,8 @@ jobs:
       - name: Instal Brew deps
         run: brew bundle
 
-      - name: Build for macOS arm64
-        run: ./build.sh arm64 && tar -zcvf ./arm64.tar.gz ./ffmpeg/dist_arm64
+      # - name: Build for macOS arm64
+      #   run: ./build.sh arm64 && tar -zcvf ./arm64.tar.gz ./ffmpeg/dist_arm64 # TODO: Build all the dependencies for M1 and this should be good
 
       - name: Build for macOS x64_64
         run: ./build.sh x64_64 && tar -zcvf ./x64_64.tar.gz ./ffmpeg/dist_x64_64
