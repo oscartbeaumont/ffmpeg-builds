@@ -1,3 +1,7 @@
+# For compiling srt
+brew "openssl"
+
+# For ffmpeg
 brew "pkg-config"
 brew "aom"
 brew "aribb24"
