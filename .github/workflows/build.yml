@@ -94,7 +94,7 @@ jobs:
 
       # Taken from: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
       - name: Install system dependencies
-        run: sudo apt-get update -qq && sudo apt-get -y install autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson ninja-build pkg-config texinfo wget yasm zlib1g-dev libunistring-dev libaom-dev libdav1d-dev libsdl2-dev libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev frei0r-plugins-dev libaribb24-dev libbluray-dev libopencore-amrnb-dev libopencore_amrwb-dev
+        run: sudo apt-get update -qq && sudo apt-get -y install autoconf automake build-essential cmake git-core libass-dev libfreetype6-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson ninja-build pkg-config texinfo wget yasm zlib1g-dev libunistring-dev libaom-dev libdav1d-dev libsdl2-dev libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev nasm libx264-dev libx265-dev libnuma-dev libvpx-dev libfdk-aac-dev libopus-dev frei0r-plugins-dev libaribb24-dev libbluray-dev libopencore-amrnb-dev libopencore-amrwb-dev
       
       - name: Build
         run: ./build.sh x64_64 && tar -zcvf ./x64_64.tar.gz ./ffmpeg/dist_x64_64
