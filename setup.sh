@@ -17,8 +17,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     cargo build --release
 
     echo "Cinstall"
-    mkdir /usr/local/lib/pkgconfig
-    chown -R $USER:$USER /usr/local/lib/pkgconfig
+    sudo mkdir /usr/local/lib/pkgconfig
+    sudo chown -R $USER:$USER /usr/local/lib/pkgconfig
     cargo cinstall --release
 
     cd ../
@@ -27,7 +27,7 @@ elif [[ $OSTYPE == 'darwin'* ]]; then
     echo "Clone"
     git clone https://github.com/Haivision/srt.git
     cd srt/
-    git checkout v1.3.0
+    git checkout v1.3.1
 
     echo "Configure"
     export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
